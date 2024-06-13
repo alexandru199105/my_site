@@ -3,7 +3,7 @@ from .settings import *
 from .settings import BASE_DIR
 
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
-CSRF_TRUSTED_ORIGINS = ['https://'+ os.environ['WEBSITE_HOSTNAME']]
+CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']]
 DEBUG = False
 
 MIDDLEWARE = [
@@ -20,17 +20,17 @@ MIDDLEWARE = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Parse the connection string into a dictionary
 connection_string = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
-parameters = {pair.split('='):pair.split('=')[1] for pair in connection_string.split(' ')}
+parameters = {pair.split('=')[0]: pair.split('=')[1] for pair in connection_string.split(' ')}
 
-
+# Define the database settings using the parsed parameters
 DATABASES = {
-    'default' : {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME' : parameters['dbname'],
-        'HOST' : parameters['host'],
-        'USER' : parameters['user'],
-        'PASSWORD' : parameters['password'],
-
-        }
+        'NAME': parameters['dbname'],
+        'HOST': parameters['host'],
+        'USER': parameters['user'],
+        'PASSWORD': parameters['password'],
+    }
 }
